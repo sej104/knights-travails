@@ -25,3 +25,15 @@ function convertPointToInteger(point) {
   const [x, y] = point;
   return x * 8 + y;
 }
+
+function knightMoves(start, end) {
+  const adjacencyList = [];
+  const moves = generateMoves(start);
+
+  const index = convertPointToInteger(start);
+  adjacencyList[index] = moves.map((move) => convertPointToInteger(move));
+
+  return adjacencyList;
+}
+
+console.log(knightMoves([0, 2]));
