@@ -36,4 +36,14 @@ function knightMoves(start, end) {
   return adjacencyList;
 }
 
+function createSquares() {
+  const squares = [];
+  for (let i = 0; i < 8; i++) {
+    for (let j = 0; j < 8; j++) {
+      squares.push([i, j]);
+    }
+  }
+  return squares;
+}
+
 console.log(knightMoves([0, 2]));
