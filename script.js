@@ -20,3 +20,8 @@ function generateMoves(point) {
   );
   return moves.filter(checkOutOfBounds);
 }
+
+function convertPointToInteger(point) {
+  const [x, y] = point;
+  return x * 8 + y;
+}
