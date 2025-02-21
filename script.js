@@ -26,16 +26,6 @@ function convertPointToInteger(point) {
   return x * 8 + y;
 }
 
-function knightMoves(start, end) {
-  const adjacencyList = [];
-  const moves = generateMoves(start);
-
-  const index = convertPointToInteger(start);
-  adjacencyList[index] = moves.map((move) => convertPointToInteger(move));
-
-  return adjacencyList;
-}
-
 function createSquares() {
   const squares = [];
   for (let i = 0; i < 8; i++) {
@@ -44,6 +34,30 @@ function createSquares() {
     }
   }
   return squares;
+}
+
+function createAdjacencyList() {
+  const adjacencyList = [];
+  const squares = createSquares();
+
+  squares.forEach((square, index) => {
+    const moves = generateMoves(square);
+    adjacencyList[index] = moves
+      .map((move) => convertPointToInteger(move))
+      .sort((x, y) => x - y);
+  });
+
+  return adjacencyList;
+}
+
+function knightMoves(start, end) {
+  const adjacencyList = [];
+  const moves = generateMoves(start);
+
+  const index = convertPointToInteger(start);
+  adjacencyList[index] = moves.map((move) => convertPointToInteger(move));
+
+  return adjacencyList;
 }
 
 console.log(knightMoves([0, 2]));
