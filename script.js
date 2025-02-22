@@ -50,14 +50,6 @@ function createAdjacencyList() {
   return adjacencyList;
 }
 
-function knightMoves(start, end) {
-  const adjacencyList = [];
-  const moves = generateMoves(start);
-
-  const index = convertPointToInteger(start);
-  adjacencyList[index] = moves.map((move) => convertPointToInteger(move));
-
-  return adjacencyList;
+function searchEndPoint(possibleMoves, end) {
+  return possibleMoves.includes(end);
 }
-
-console.log(knightMoves([0, 2]));
