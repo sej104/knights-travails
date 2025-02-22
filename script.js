@@ -50,6 +50,31 @@ function createAdjacencyList() {
   return adjacencyList;
 }
 
+function levelOrder(adjacencyList, startIndex, endIndex) {
+  let queue = [startIndex];
+  let queueIndex = 0;
+
+  while (queueIndex < queue.length) {
+    const current = queue[queueIndex];
+    const possibleMoves = adjacencyList[current];
+
+    if (searchEndPoint(possibleMoves, endIndex)) return true;
+
+    possibleMoves.forEach((move) => queue.push(move));
+    queue = [...new Set(queue)];
+    queueIndex += 1;
+  }
+}
+
 function searchEndPoint(possibleMoves, end) {
   return possibleMoves.includes(end);
 }
+
+function knightMoves(start, end) {
+  const startIndex = convertPointToInteger(start);
+  const endIndex = convertPointToInteger(end);
+  const adjacencyList = createAdjacencyList();
+  return levelOrder(adjacencyList, startIndex, endIndex);
+}
+
+console.log(knightMoves([0, 0], [2, 5]));
