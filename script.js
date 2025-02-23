@@ -26,6 +26,11 @@ function convertPointToInteger(point) {
   return x * 8 + y;
 }
 
+function convertIntegerToPoint(integer) {
+  const squares = createSquares();
+  return squares[integer];
+}
+
 function createSquares() {
   const squares = [];
   for (let i = 0; i < 8; i++) {
@@ -89,7 +94,7 @@ function generatePath(current, start, end, queue) {
     parent = queue.find((element) => element.move === parent.parent);
     path.unshift(parent.move);
   }
-  return path;
+  return path.map(convertIntegerToPoint);
 }
 
 function knightMoves(start, end) {
@@ -99,4 +104,4 @@ function knightMoves(start, end) {
 }
 
 console.log(createAdjacencyList());
-console.log(knightMoves([3, 3], [4, 3]));
+console.log(knightMoves([0, 0], [0, 7]));
