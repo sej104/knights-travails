@@ -63,7 +63,9 @@ function levelOrder(startIndex, endIndex) {
     const current = queue[queueIndex];
     const possibleMoves = adjacencyList[current.move];
 
-    if (searchEndPoint(possibleMoves, endIndex)) return true;
+    if (searchEndPoint(possibleMoves, endIndex)) {
+      return true;
+    }
 
     possibleMoves.forEach((move) => queue.push({ parent: current.move, move }));
     queue = filterQueue(queue);
@@ -74,7 +76,9 @@ function levelOrder(startIndex, endIndex) {
 function filterQueue(queue) {
   return queue.filter(
     (obj1, index, arr) =>
-      arr.findIndex((obj2) => obj2.move === obj1.move) === index
+      arr.findIndex((obj2) =>
+        ["parent", "move"].every((key) => obj2[key] === obj1[key])
+      ) === index
   );
 }
 
@@ -85,4 +89,4 @@ function knightMoves(start, end) {
 }
 
 console.log(createAdjacencyList());
-console.log(knightMoves([0, 0], [1, 6]));
+console.log(knightMoves([2, 4], [6, 0]));
