@@ -64,7 +64,7 @@ function levelOrder(startIndex, endIndex) {
     const possibleMoves = adjacencyList[current.move];
 
     if (searchEndPoint(possibleMoves, endIndex)) {
-      return true;
+      return generatePath(current, startIndex, endIndex, queue);
     }
 
     possibleMoves.forEach((move) => queue.push({ parent: current.move, move }));
@@ -82,6 +82,16 @@ function filterQueue(queue) {
   );
 }
 
+function generatePath(current, start, end, queue) {
+  let parent = queue.find((element) => element.move === current.parent);
+  const path = [parent.move, current.move, end];
+  while (parent.parent) {
+    parent = queue.find((element) => element.move === parent.parent);
+    path.unshift(parent.move);
+  }
+  return path;
+}
+
 function knightMoves(start, end) {
   const startIndex = convertPointToInteger(start);
   const endIndex = convertPointToInteger(end);
@@ -89,4 +99,4 @@ function knightMoves(start, end) {
 }
 
 console.log(createAdjacencyList());
-console.log(knightMoves([2, 4], [6, 0]));
+console.log(knightMoves([3, 3], [4, 3]));
