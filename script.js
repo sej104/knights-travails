@@ -50,31 +50,39 @@ function createAdjacencyList() {
   return adjacencyList;
 }
 
-function levelOrder(adjacencyList, startIndex, endIndex) {
-  let queue = [startIndex];
+function searchEndPoint(possibleMoves, endPoint) {
+  return possibleMoves.includes(endPoint);
+}
+
+function levelOrder(startIndex, endIndex) {
+  const adjacencyList = createAdjacencyList();
+  let queue = [{ parent: null, move: startIndex }];
   let queueIndex = 0;
 
   while (queueIndex < queue.length) {
     const current = queue[queueIndex];
-    const possibleMoves = adjacencyList[current];
+    const possibleMoves = adjacencyList[current.move];
 
     if (searchEndPoint(possibleMoves, endIndex)) return true;
 
-    possibleMoves.forEach((move) => queue.push(move));
-    queue = [...new Set(queue)];
+    possibleMoves.forEach((move) => queue.push({ parent: current.move, move }));
+    queue = filterQueue(queue);
     queueIndex += 1;
   }
 }
 
-function searchEndPoint(possibleMoves, end) {
-  return possibleMoves.includes(end);
+function filterQueue(queue) {
+  return queue.filter(
+    (obj1, index, arr) =>
+      arr.findIndex((obj2) => obj2.move === obj1.move) === index
+  );
 }
 
 function knightMoves(start, end) {
   const startIndex = convertPointToInteger(start);
   const endIndex = convertPointToInteger(end);
-  const adjacencyList = createAdjacencyList();
-  return levelOrder(adjacencyList, startIndex, endIndex);
+  return levelOrder(startIndex, endIndex);
 }
 
-console.log(knightMoves([0, 0], [2, 5]));
+console.log(createAdjacencyList());
+console.log(knightMoves([0, 0], [1, 6]));
