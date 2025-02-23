@@ -90,7 +90,7 @@ function filterQueue(queue) {
 function generatePath(current, start, end, queue) {
   let parent = queue.find((element) => element.move === current.parent);
   const path = [parent.move, current.move, end];
-  while (parent.parent) {
+  while (parent.parent !== null) {
     parent = queue.find((element) => element.move === parent.parent);
     path.unshift(parent.move);
   }
@@ -104,4 +104,4 @@ function knightMoves(start, end) {
 }
 
 console.log(createAdjacencyList());
-console.log(knightMoves([0, 0], [0, 7]));
+console.log(knightMoves([0, 0], [7, 7]));
