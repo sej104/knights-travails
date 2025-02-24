@@ -99,7 +99,12 @@ function findShortestPath(startIndex, endIndex) {
 }
 
 function outputPath(path) {
-  console.log(`You made it in ${path.length - 1} moves! Here's your path:`);
+  const pathLength = path.length - 1;
+  console.log(
+    `You made it in ${pathLength} move${
+      pathLength > 1 ? "s" : ""
+    }! Here's your path:`
+  );
   path.forEach((move) => console.log(move));
 }
 
@@ -110,4 +115,4 @@ function knightMoves(startPoint, endPoint) {
   outputPath(path);
 }
 
-console.log(knightMoves([0, 0], [2, 6]));
+knightMoves([0, 0], [0, 0]);
