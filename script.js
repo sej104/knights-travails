@@ -94,7 +94,12 @@ function generatePath(current, end, queue) {
     path.unshift(parent.move);
     parent = queue.find((element) => element.move === parent.parent);
   }
-  return path.map(convertIntegerToPoint);
+  consolePath(path.map(convertIntegerToPoint));
+}
+
+function consolePath(path) {
+  console.log(`You made it in ${path.length - 1} moves! Here's your path:`);
+  path.forEach((move) => console.log(move));
 }
 
 function knightMoves(start, end) {
@@ -103,4 +108,4 @@ function knightMoves(start, end) {
   return levelOrder(startIndex, endIndex);
 }
 
-console.log(knightMoves([0, 0], [7, 7]));
+console.log(knightMoves([3, 3], [4, 3]));
