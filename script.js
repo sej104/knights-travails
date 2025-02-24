@@ -21,60 +21,58 @@ function generateMoves(point) {
   return moves.filter(checkOutOfBounds);
 }
 
-function convertPointToInteger(point) {
+function convertPointToIndex(point) {
   const [x, y] = point;
   return x * 8 + y;
 }
 
-function convertIntegerToPoint(integer) {
-  const squares = createSquares();
-  return squares[integer];
+function convertIndexToPoint(index) {
+  const points = createPoints();
+  return points[index];
 }
 
-function createSquares() {
-  const squares = [];
-  for (let i = 0; i < 8; i++) {
-    for (let j = 0; j < 8; j++) {
-      squares.push([i, j]);
+function createPoints() {
+  const points = [];
+  for (let x = 0; x < 8; x++) {
+    for (let y = 0; y < 8; y++) {
+      points.push([x, y]);
     }
   }
-  return squares;
+  return points;
 }
 
 function createAdjacencyList() {
   const adjacencyList = [];
-  const squares = createSquares();
+  const points = createPoints();
 
-  squares.forEach((square, index) => {
-    const moves = generateMoves(square);
-    adjacencyList[index] = moves
-      .map((move) => convertPointToInteger(move))
-      .sort((x, y) => x - y);
+  points.forEach((point) => {
+    const moves = generateMoves(point);
+    adjacencyList.push(
+      moves.map((move) => convertPointToIndex(move)).sort((x, y) => x - y)
+    );
   });
 
   return adjacencyList;
 }
 
-function searchEndPoint(possibleMoves, endPoint) {
-  return possibleMoves.includes(endPoint);
+function searchEndIndex(moves, endIndex) {
+  return moves.includes(endIndex);
 }
 
-function levelOrder(startIndex, endIndex) {
+function findShortestPath(startIndex, endIndex) {
   const adjacencyList = createAdjacencyList();
   let queue = [{ parent: null, move: startIndex }];
-  let queueIndex = 0;
 
-  while (queueIndex < queue.length) {
-    const current = queue[queueIndex];
-    const possibleMoves = adjacencyList[current.move];
+  for (let i = 0; i < queue.length; i++) {
+    const current = queue[i];
+    const moves = adjacencyList[current.move];
 
-    if (searchEndPoint(possibleMoves, endIndex)) {
+    if (searchEndIndex(moves, endIndex)) {
       return generatePath(current, endIndex, queue);
     }
 
-    possibleMoves.forEach((move) => queue.push({ parent: current.move, move }));
+    moves.forEach((move) => queue.push({ parent: current.move, move }));
     queue = filterQueue(queue);
-    queueIndex += 1;
   }
 }
 
@@ -87,25 +85,29 @@ function filterQueue(queue) {
   );
 }
 
-function generatePath(current, end, queue) {
+function generatePath(current, endIndex, queue) {
   let parent = queue.find((element) => element.move === current.parent);
-  const path = [current.move, end];
-  while (parent !== null && parent !== undefined) {
+  const path = [];
+
+  while (parent !== undefined) {
     path.unshift(parent.move);
     parent = queue.find((element) => element.move === parent.parent);
   }
-  consolePath(path.map(convertIntegerToPoint));
+
+  path.push(current.move, endIndex);
+  return path.map(convertIndexToPoint);
 }
 
-function consolePath(path) {
+function outputPath(path) {
   console.log(`You made it in ${path.length - 1} moves! Here's your path:`);
   path.forEach((move) => console.log(move));
 }
 
-function knightMoves(start, end) {
-  const startIndex = convertPointToInteger(start);
-  const endIndex = convertPointToInteger(end);
-  return levelOrder(startIndex, endIndex);
+function knightMoves(startPoint, endPoint) {
+  const startIndex = convertPointToIndex(startPoint);
+  const endIndex = convertPointToIndex(endPoint);
+  const path = findShortestPath(startIndex, endIndex);
+  outputPath(path);
 }
 
-console.log(knightMoves([3, 3], [4, 3]));
+console.log(knightMoves([0, 0], [2, 6]));
