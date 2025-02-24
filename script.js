@@ -1,3 +1,23 @@
+function convertPointToIndex(point) {
+  const [x, y] = point;
+  return x * 8 + y;
+}
+
+function createPoints() {
+  const points = [];
+  for (let x = 0; x < 8; x++) {
+    for (let y = 0; y < 8; y++) {
+      points.push([x, y]);
+    }
+  }
+  return points;
+}
+
+function convertIndexToPoint(index) {
+  const points = createPoints();
+  return points[index];
+}
+
 function checkOutOfBounds(point) {
   for (let coordinate of point) {
     if (coordinate < 0 || coordinate > 7) return false;
@@ -21,26 +41,6 @@ function generateMoves(point) {
   return moves.filter(checkOutOfBounds);
 }
 
-function convertPointToIndex(point) {
-  const [x, y] = point;
-  return x * 8 + y;
-}
-
-function convertIndexToPoint(index) {
-  const points = createPoints();
-  return points[index];
-}
-
-function createPoints() {
-  const points = [];
-  for (let x = 0; x < 8; x++) {
-    for (let y = 0; y < 8; y++) {
-      points.push([x, y]);
-    }
-  }
-  return points;
-}
-
 function createAdjacencyList() {
   const adjacencyList = [];
   const points = createPoints();
@@ -55,8 +55,30 @@ function createAdjacencyList() {
   return adjacencyList;
 }
 
+function generatePath(current, endIndex, queue) {
+  let parent = queue.find((element) => element.move === current.parent);
+  const path = [];
+
+  while (parent !== undefined) {
+    path.unshift(parent.move);
+    parent = queue.find((element) => element.move === parent.parent);
+  }
+
+  path.push(current.move, endIndex);
+  return path.map(convertIndexToPoint);
+}
+
 function searchEndIndex(moves, endIndex) {
   return moves.includes(endIndex);
+}
+
+function filterQueue(queue) {
+  return queue.filter(
+    (obj1, index, arr) =>
+      arr.findIndex((obj2) =>
+        ["parent", "move"].every((key) => obj2[key] === obj1[key])
+      ) === index
+  );
 }
 
 function findShortestPath(startIndex, endIndex) {
@@ -74,28 +96,6 @@ function findShortestPath(startIndex, endIndex) {
     moves.forEach((move) => queue.push({ parent: current.move, move }));
     queue = filterQueue(queue);
   }
-}
-
-function filterQueue(queue) {
-  return queue.filter(
-    (obj1, index, arr) =>
-      arr.findIndex((obj2) =>
-        ["parent", "move"].every((key) => obj2[key] === obj1[key])
-      ) === index
-  );
-}
-
-function generatePath(current, endIndex, queue) {
-  let parent = queue.find((element) => element.move === current.parent);
-  const path = [];
-
-  while (parent !== undefined) {
-    path.unshift(parent.move);
-    parent = queue.find((element) => element.move === parent.parent);
-  }
-
-  path.push(current.move, endIndex);
-  return path.map(convertIndexToPoint);
 }
 
 function outputPath(path) {
