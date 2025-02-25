@@ -1,3 +1,7 @@
+function checkDuplicatePoints(startPoint, endPoint) {
+  return startPoint.every((element) => endPoint.includes(element));
+}
+
 function convertPointToIndex(point) {
   const [x, y] = point;
   return x * 8 + y;
@@ -108,10 +112,6 @@ function outputPath(path) {
   path.forEach((move) => console.log(move));
 }
 
-function checkDuplicatePoints(startPoint, endPoint) {
-  return startPoint.every((element) => endPoint.includes(element));
-}
-
 function knightMoves(startPoint, endPoint) {
   if (checkDuplicatePoints(startPoint, endPoint)) {
     console.log("Select different start and end points");
@@ -129,4 +129,4 @@ function knightMoves(startPoint, endPoint) {
   outputPath(path);
 }
 
-knightMoves([-1, 0], [7, 7]);
+knightMoves([0, 0], [7, 7]);
