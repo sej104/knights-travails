@@ -18,7 +18,7 @@ function convertIndexToPoint(index) {
   return points[index];
 }
 
-function checkOutOfBounds(point) {
+function checkInBounds(point) {
   for (let coordinate of point) {
     if (coordinate < 0 || coordinate > 7) return false;
   }
@@ -38,7 +38,7 @@ function generateMoves(point) {
     [x - 1, y - 2],
     [x - 1, y + 2]
   );
-  return moves.filter(checkOutOfBounds);
+  return moves.filter(checkInBounds);
 }
 
 function createAdjacencyList() {
@@ -117,10 +117,16 @@ function knightMoves(startPoint, endPoint) {
     console.log("Select different start and end points");
     return;
   }
+
+  if (!checkInBounds(startPoint) || !checkInBounds(endPoint)) {
+    console.log("Select a valid start and end point");
+    return;
+  }
+
   const startIndex = convertPointToIndex(startPoint);
   const endIndex = convertPointToIndex(endPoint);
   const path = findShortestPath(startIndex, endIndex);
   outputPath(path);
 }
 
-knightMoves([0, 0], [3, 3]);
+knightMoves([-1, 0], [7, 7]);
