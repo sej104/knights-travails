@@ -108,7 +108,15 @@ function outputPath(path) {
   path.forEach((move) => console.log(move));
 }
 
+function checkDuplicatePoints(startPoint, endPoint) {
+  return startPoint.every((element) => endPoint.includes(element));
+}
+
 function knightMoves(startPoint, endPoint) {
+  if (checkDuplicatePoints(startPoint, endPoint)) {
+    console.log("Select different start and end points");
+    return;
+  }
   const startIndex = convertPointToIndex(startPoint);
   const endIndex = convertPointToIndex(endPoint);
   const path = findShortestPath(startIndex, endIndex);
