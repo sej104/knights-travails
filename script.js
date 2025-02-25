@@ -74,9 +74,9 @@ function searchEndIndex(moves, endIndex) {
 
 function filterQueue(queue) {
   return queue.filter(
-    (obj1, index, arr) =>
-      arr.findIndex((obj2) =>
-        ["parent", "move"].every((key) => obj2[key] === obj1[key])
+    (element1, index, arr) =>
+      arr.findIndex((element2) =>
+        ["parent", "move"].every((key) => element2[key] === element1[key])
       ) === index
   );
 }
@@ -115,4 +115,4 @@ function knightMoves(startPoint, endPoint) {
   outputPath(path);
 }
 
-knightMoves([0, 0], [0, 0]);
+knightMoves([0, 0], [3, 3]);
